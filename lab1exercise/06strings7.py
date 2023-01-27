@@ -1,4 +1,4 @@
-#Replace the character with a H J
-txt="Hello World"
-txt=txt.replace("H","J")
-print(txt)
+#Replace the character H with a J
+x = "Hello World"
+y=x.replace("H","J")
+print(y)
