@@ -28,8 +28,10 @@ class Food:
     def __init__(self):
         self.x=randrange(0, WIDTH, cell)            # кез келген жерден пайда болады
         self.y=randrange(0, HEIGHT, cell)
+        self.size=randint(15, 30)
+        # self.image=pygame.transform.scale(pygame.image.load('./img/pic/pic1.png'), (20, 20))
     def draw(self):
-        pygame.draw.rect(screen, RED, (self.x, self.y, cell, cell))
+        pygame.draw.rect(screen, RED, (self.x, self.y, self.size, self.size))
     def redraw(self):
         self.x=randrange(0, WIDTH, cell)      
         self.y=randrange(0, HEIGHT, cell)
@@ -43,7 +45,7 @@ class Wall:
 class Snake:
     def __init__(self):
         self.speed=cell
-        self.body=[[60, 60]]     # жылан басынын координатасы
+        self.body=[[60, 60], [1000, 1000]]     # жылан басынын координатасы
         self.dx=0   
         self.dy=self.speed          # жыланнын алгашкы козгалысы
         self.destination=''
@@ -109,6 +111,7 @@ while restart:
 
     SCORE=0
     level=0
+    time=0
 
     finished=False
     win=False
@@ -154,6 +157,13 @@ while restart:
         s.check_food(f)
         s.collide_self()
 
+        if f.draw:
+            time+=1
+
+        if time==40:
+            f.redraw()
+            time=0
+
         for wall in walls:
             wall.draw()
             if f.x == wall.x and f.y == wall.y:         # тамак стенадан шыкпайды
@@ -161,9 +171,9 @@ while restart:
             if s.body[0][0]==wall.x and s.body[0][1]==wall.y:   # жылан стенага согылса ойын аякталады
                 lose=True
 
-        for i in range(0, WIDTH, cell):
-            for j in range(0, HEIGHT, cell):
-                pygame.draw.rect(screen, ORANGE, (i, j, cell, cell), 1)   
+        # for i in range(0, WIDTH, cell):
+        #     for j in range(0, HEIGHT, cell):
+        #         pygame.draw.rect(screen, ORANGE, (i, j, cell, cell), 1)   
 
         score=font1.render(f'SCORE: {SCORE}', True, YELLOW)
         screen.blit(score, (10, 560))
